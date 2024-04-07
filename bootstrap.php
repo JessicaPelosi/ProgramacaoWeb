@@ -11,17 +11,13 @@ $r = new Php\Primeiroprojeto\Router($metodo, $caminho);
 
 #ROTAS
 
-$r->get('/olamundo', function(){
-    return "Olá Mundo!";
-});
+$r->get('/olamundo', 'Php\Primeiroprojeto\Controllers\HomeController@olaMundo');
 
 $r->get('/olapessoa/{nome}', function($params){
     return 'Olá ' . $params[1];
 });
 
-$r->get('/exer1/formulario', function(){
-    include("exer1.html");
-});
+$r->get('/exer1/formulario', 'Php\Primeiroprojeto\Controllers\HomeController@formExer1');
 
 $r->post('/exer1/resposta', function(){
     $valor1 = $_POST['valor1'];
@@ -29,6 +25,24 @@ $r->post('/exer1/resposta', function(){
     $soma = $valor1 + $valor2;
     return "A soma é: {$soma}";
 });
+
+$r->get('/exer4/formulario', function(){
+    require_once('exer4.html');
+});
+
+$r->post('/exer4/resposta', function(){
+    $valor = $_POST["valor"];
+    $resposta = "";
+    for ($i = 0; $i <= 10; $i++){
+        $resposta .= "$valor x $i = ".($valor * $i)."<br/>";
+    }
+    return $resposta;
+});
+
+// Chamando o formulário para inserir categoria
+$r->get('/categoria/inserir', 'Php\Primeiroprojeto\Controllers\CategoriaController@inserir');
+
+$r->post('/categoria/novo', 'Php\Primeiroprojeto\Controllers\CategoriaController@novo');
 #ROTAS
 
 $resultado = $r->handler();
@@ -39,4 +53,11 @@ if(!$resultado){
     die();
 }
 
-echo $resultado($r->getParams());
+if ($resultado instanceof Closure){
+    echo $resultado($r->getParams());
+} elseif (is_string($resultado)){
+    $resultado = explode("@", $resultado);
+    $controller = new $resultado[0];
+    $resultado = $resultado[1];
+    echo $controller->$resultado($r->getParams());
+}
