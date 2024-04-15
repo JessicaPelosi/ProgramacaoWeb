@@ -101,6 +101,78 @@ $r->post('/exercicio5/resposta', function(){
     return "Fatorial de $valor é: $fatorial";
 });
 
+#Exercício 6
+$r->get('/exercicio6/formulario', function(){
+    require_once('exercicio6.html');
+});
+
+$r->post('/exercicio6/resposta', function(){
+    $valora = $_POST['valora'];
+    $valorb = $_POST['valorb'];
+    if ($valora < $valorb) {
+        echo "O valor de A é: $valora e o valor de B é: $valorb\n";
+    } elseif ($valora > $valorb) {
+        echo "O valor de B é: $valorb e o valor de A é: $valora\n";
+    } else {
+        echo "Os valores são iguais: $valora\n";
+    }
+});
+
+#Exercício 7
+$r->get('/exercicio7/formulario', function(){
+    require_once('exercicio7.html');
+});
+
+$r->post('/exercicio7/resposta', function(){
+    $valor = $_POST['valor'];
+    $centimetro = $valor * 100;
+    return "$valor metro(s) convertido é igual a $centimetro centímetros.";
+});
+
+#Exercício 8
+$r->get('/exercicio8/formulario', function(){
+    require_once('exercicio8.html');
+});
+
+$r->post('/exercicio8/resposta', function(){
+    $tamanho_area = $_POST['tamanho_area'];
+    $litros_tinta = ceil($tamanho_area / 3);
+    $latas = ceil($litros_tinta / 18);
+    $preco_total = $latas * 80;
+
+    return "Quantidade de latas de tinta necessárias: $latas <br>" .
+           "Preço total: R$ $preco_total";
+});
+
+#Exercício 9
+$r->get('/exercicio9/formulario', function(){
+    require_once('exercicio9.html');
+});
+
+$r->post('/exercicio9/resposta', function(){
+    $ano_nascimento = $_POST['ano_nascimento'];
+    $ano_atual = date("Y");
+    $idade = $ano_atual - $ano_nascimento;
+    $dias_vividos = $idade * 365;
+    $idade_2025 = 2025 - $ano_nascimento;
+
+    return "Idade: $idade anos <br>" .
+           "Dias vividos: $dias_vividos dias <br>".
+           "Idade em 2025: $idade_2025 anos";
+});
+
+#Exercício 10
+$r->get('/exercicio10/formulario', function(){
+    require_once('exercicio10.html');
+});
+
+$r->post('/exercicio10/resposta', function(){
+    $peso = $_POST['peso'];
+    $altura = $_POST['altura'];
+    $imc = $peso / ($altura ** 2);
+    return "Seu IMC é: " . number_format($imc,2);
+});
+
 // Chamando o formulário para inserir categoria
 $r->get('/categoria/inserir', 'Php\Primeiroprojeto\Controllers\CategoriaController@inserir');
 
